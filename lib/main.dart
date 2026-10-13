@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/core/routs/app_routs.dart';
+import 'package:flutter_application_1/core/routes/app_routs.dart';
 import 'package:flutter_application_1/features/view/screens/details_screen.dart';
 import 'package:flutter_application_1/features/view/screens/home_screen.dart';
 
@@ -14,10 +14,10 @@ class NewsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRouts.home,
+      initialRoute: AppRoutes.home,
       routes: {
-        AppRouts.details: (context) => DetailsScreen(),
-        AppRouts.home: (context) => HomeScreen(),
+        AppRoutes.details: (context) => DetailsScreen(),
+        AppRoutes.home: (context) => HomeScreen(),
       },
     );
   }

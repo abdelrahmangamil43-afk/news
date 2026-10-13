@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/data/model/news_model.dart';
 import 'package:flutter_application_1/features/view/widgets/custome_image_news.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -6,6 +7,7 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var arg = ModalRoute.of(context)?.settings.arguments as Articles;
     return Scaffold(
       backgroundColor: const Color(0xff202020),
       appBar: AppBar(
@@ -22,12 +24,12 @@ class DetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomeImageNews(),
+            CustomeImageNews(image: arg.urlToImage ?? ""),
 
             SizedBox(height: 30),
 
             Text(
-              "Russian warship: Moskva sinks in Black Sea",
+              arg.title ?? "",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -38,7 +40,7 @@ class DetailsScreen extends StatelessWidget {
             SizedBox(height: 10),
 
             Text(
-              "Europe",
+              arg.author ?? "",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -48,7 +50,7 @@ class DetailsScreen extends StatelessWidget {
             SizedBox(height: 10),
 
             Text(
-              "Russian warship: Moskva sinks in Black Sea",
+              arg.content ?? "",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
