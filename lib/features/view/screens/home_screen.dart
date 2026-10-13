@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/core/network/api_result.dart';
+import 'package:flutter_application_1/features/data/model/news_model.dart';
 import 'package:flutter_application_1/features/view/widgets/news_item.dart';
+import 'package:flutter_application_1/features/data/api/app_api.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Articles> articles = [];
+  bool isLoading = true;
+  String? error;
+  @override
+  void initState() {
+    super.initState();
+    getAllArticls();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +36,39 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
       ),
 
-      body: ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        itemBuilder: (context, index) => NewsItem(),
-        separatorBuilder: (context, index) => SizedBox(height: 10),
-        itemCount: 10,
-      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : error != null
+          ? Center(
+              child: Text(
+                error ?? "",
+                style: TextStyle(fontSize: 20, color: Colors.red),
+                textAlign: .center,
+              ),
+            )
+          : ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              itemBuilder: (context, index) =>
+                  NewsItem(articles: articles[index]),
+              separatorBuilder: (context, index) => SizedBox(height: 10),
+              itemCount: articles.length,
+            ),
     );
+  }
+
+  void getAllArticls() async {
+    isLoading = true;
+    final result = await Api.getNews();
+
+    switch (result) {
+      case Success<NewsModel>():
+        articles = result.data.articles ?? [];
+
+      case Error<NewsModel>():
+        error = result.error;
+    }
+
+    isLoading = false;
+    setState(() {});
   }
 }

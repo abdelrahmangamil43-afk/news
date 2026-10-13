@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CustomeImageNews extends StatelessWidget {
-  const CustomeImageNews({super.key, this.height = 200});
+  const CustomeImageNews({super.key, this.height = 200, required this.image});
   final double height;
+  final String image;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
