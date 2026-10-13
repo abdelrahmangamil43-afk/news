@@ -1,4 +1,5 @@
 # News
 
-<img width="282" height="607" alt="image" src="https://github.com/user-attachments/assets/9db7f6f0-810b-487c-b02e-4e3523113742" />
+<img width="322" height="663" alt="image" src="https://github.com/user-attachments/assets/f703232d-d79d-44a7-80df-8de37fb89668" />
+
 
