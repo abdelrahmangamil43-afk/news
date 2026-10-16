@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/routes/app_routs.dart';
-import 'package:flutter_application_1/features/view/screens/details_screen.dart';
-import 'package:flutter_application_1/features/view/screens/home_screen.dart';
+import 'package:flutter_application_1/features/presentation/view/screens/details_screen.dart';
+import 'package:flutter_application_1/features/presentation/view/screens/home_screen.dart';
 
 void main() {
   runApp(const NewsApp());
