@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/network/api_result.dart';
 import 'package:flutter_application_1/features/data/model/news_model.dart';
-import 'package:flutter_application_1/features/view/widgets/news_item.dart';
+import 'package:flutter_application_1/features/presentation/view/widgets/news_item.dart';
 import 'package:flutter_application_1/features/data/api/app_api.dart';
+import 'package:flutter_application_1/features/presentation/view_model/home_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,13 +14,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Articles> articles = [];
-  bool isLoading = true;
-  String? error;
+  late HomeCubit cubit;
+
   @override
   void initState() {
     super.initState();
-    getAllArticls();
+    cubit = HomeCubit();
+    cubit.getAllArticls();
   }
 
   @override
@@ -36,39 +38,30 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
       ),
 
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : error != null
-          ? Center(
+      body: BlocBuilder<HomeCubit, HomeState>(
+        bloc: cubit,
+        builder: (context, state) {
+          if (state is HomeSuccess) {
+            return ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              itemBuilder: (context, index) =>
+                  NewsItem(articles: cubit.articles[index]),
+              separatorBuilder: (context, index) => SizedBox(height: 10),
+              itemCount: cubit.articles.length,
+            );
+          }
+          if (state is HomeErrorr) {
+            return Center(
               child: Text(
-                error ?? "",
+                cubit.error ?? "",
                 style: TextStyle(fontSize: 20, color: Colors.red),
                 textAlign: .center,
               ),
-            )
-          : ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              itemBuilder: (context, index) =>
-                  NewsItem(articles: articles[index]),
-              separatorBuilder: (context, index) => SizedBox(height: 10),
-              itemCount: articles.length,
-            ),
+            );
+          }
+          return Center(child: (CircularProgressIndicator()));
+        },
+      ),
     );
-  }
-
-  void getAllArticls() async {
-    isLoading = true;
-    final result = await Api.getNews();
-
-    switch (result) {
-      case Success<NewsModel>():
-        articles = result.data.articles ?? [];
-
-      case Error<NewsModel>():
-        error = result.error;
-    }
-
-    isLoading = false;
-    setState(() {});
   }
 }
